@@ -1,4 +1,4 @@
-from typing import Set
+from typing import Optional, Set
 import random
 
 
@@ -68,14 +68,13 @@ class Pizza:
             print('Bad name of pizza! Must be string type')
         elif value in Pizza._recipes:
             self._recipe = Pizza._recipes.get(value)
-            self._pict = Pizza._picts.get(value)
+            self._pict = Pizza._picts[value]
         else:
             self._recipe = None
-            self._pict = None
         self._name = value
 
     @property
-    def recipe(self) -> Set[str]:
+    def recipe(self) -> Optional[Set[str]]:
         return self._recipe
 
     @recipe.setter
@@ -112,7 +111,7 @@ class Pizza:
     @log
     def bake(pizza):
         """bake"""
-        if pizza.recipe == None:
+        if pizza.recipe is None:
             print('pizza {} hasn\'t recipe!!!'.format(pizza.name))
             print('Shouldn\'t be baked!')
             return
@@ -122,7 +121,7 @@ class Pizza:
     @log
     def delivery(pizza):
         """Delivery pizza"""
-        if pizza.recipe == None:
+        if pizza.recipe is None:
             print('pizza {} hasn\'t recipe!!!'.format(pizza.name))
             print('Shouldn\'t be baked!')
             return
