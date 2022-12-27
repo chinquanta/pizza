@@ -10,6 +10,10 @@ def log(f):
 
 
 class Pizza:
+    """
+    Содержит и расширяет (по мере поступления новых заказов)
+    коллекции рецептов пиццы.
+    """
     _sizes = ['L', 'XL']
     _recipes = {'Margherita': {'tomato sauce',
                                'mozzarella',
@@ -20,6 +24,16 @@ class Pizza:
                  size: str,
                  name: str,
                  pict: str):
+        """
+        Обязательно задать:
+            - размер
+            - название
+            - пиктограмму
+        пиццы. Рецепт не задается при инициализации,
+        а задается отдельно.
+        Если задано имя пиццы из имеющегося списка рецептов, то
+        в заказ сразу подтягивается имеющийся в базе рецепт и пиктограмма.
+        """
         if size not in Pizza._sizes:
             raise ValueError('Bad size of pizza! Take "L" or "XL".')
         if not isinstance(name, str):
@@ -73,12 +87,14 @@ class Pizza:
             if yn == 'y':
                 prec = Pizza._recipes
                 self._name = [key for key in prec if prec[key] == value][0]
+                self._recipe = Pizza._recipes[self._name]
                 self._pict = Pizza._picts[self._name]
         elif self._name in Pizza._recipes:
             print('Can\'t change recipe for the name!')
         else:
             self._recipes[self._name] = value
             self._recipe = value
+            self._picts[self._name] = self.pict
 
     @property
     def pict(self) -> str:
@@ -96,33 +112,71 @@ class Pizza:
     @log
     def bake(pizza):
         """bake"""
+        if pizza.recipe == None:
+            print('pizza {} hasn\'t recipe!!!'.format(pizza.name))
+            print('Shouldn\'t be baked!')
+            return
         how_long = random.randint(1, 10)
         print('bake pizza - "{}" in {} minutes'.format(pizza.name, how_long))
 
     @log
     def delivery(pizza):
         """Delivery pizza"""
+        if pizza.recipe == None:
+            print('pizza {} hasn\'t recipe!!!'.format(pizza.name))
+            print('Shouldn\'t be baked!')
+            return
         how_long = random.randint(10, 20)
         print('delivery pizza - "{}" in {} minutes'.format(pizza.name,
                                                            how_long))
 
 
 if __name__ == '__main__':
-
-    pz1 = Pizza("L", "o", '🧀')
+    input('          Enter, please\n')
+    print('0 *******************************')
+    pz1 = Pizza("L", "Noname", '🧀')
+    print("pz1.size = {}".format(pz1.size))
+    print("pz1.name = {}".format(pz1.name))
+    print("pz1.recipe = {}".format(pz1.recipe))
+    print("pz1.pict = {}".format(pz1.pict))
+    print('1 *******************************')
     input('          Enter, please\n')
     pz1.size = "XL"
+    print("pz1.size = {}".format(pz1.size))
+    print("pz1.name = {}".format(pz1.name))
+    print("pz1.recipe = {}".format(pz1.recipe))
+    print("pz1.pict = {}".format(pz1.pict))
+    print('2 *******************************')
     input('          Enter, please\n')
     pz1.recipe = {'tomato sauce', 'mozzarella', 'tomatoes'}
+    print("pz1.size = {}".format(pz1.size))
+    print("pz1.name = {}".format(pz1.name))
+    print("pz1.recipe = {}".format(pz1.recipe))
+    print("pz1.pict = {}".format(pz1.pict))
+    print('3 *******************************')
     input('          Enter, please\n')
     pz2 = Pizza("L", 'Pepperoni', '🍕')
+    print("pz2.size = {}".format(pz2.size))
+    print("pz2.name = {}".format(pz2.name))
+    print("pz2.recipe = {}".format(pz2.recipe))
+    print("pz2.pict = {}".format(pz2.pict))
+    print('4 *******************************')
     input('          Enter, please\n')
     pz2.recipe = {'tomato sauce', 'mozzarella', 'pepperoni'}
+    print("pz2.size = {}".format(pz2.size))
+    print("pz2.name = {}".format(pz2.name))
+    print("pz2.recipe = {}".format(pz2.recipe))
+    print("pz2.pict = {}".format(pz2.pict))
+    print('5 *******************************')
+    input('          Enter, please\n')
     Pizza.bake(pz1)
+    print('6 *******************************')
     input('          Enter, please\n')
     Pizza.delivery(pz1)
+    print('7 *******************************')
     input('          Enter, please\n')
     Pizza.bake(pz2)
+    print('7 *******************************')
     input('          Enter, please\n')
     print(Pizza._recipes)
     print(Pizza._picts)
